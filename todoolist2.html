@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <title>ToDoリスト</title>
+    <!-- enterフェーズとleaveフェーズの設定を行う v.move:要素の位置が変更される時に自動的に追加されるクラス -->
+    <style>
+        .deltbtn {
+            margin-left: 10px;
+        }
+        .done{ 
+            color: gray;
+            text-decoration: line-through;
+        }
+        .v-enter-active,.v-leave-active{
+            position: absolute;
+            transition: all 1s;
+        }
+        .v-enter,.v-leave-to{
+            transform: translateX(50px);
+            opacity: 0;
+        }
+        .v-move{
+            transition: transform 1s;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <h1>ToDoリスト</h1>
+
+        <!-- v-modelディレクティブによりnewtodoプロパティと双方向データバインディングを設定する -->
+        <!-- .trim修飾子を指定してあらかじめtodo項目の前後のスペースを取り除く -->
+        <input type="text" v-model.trim="newtodo" placeholder="todoを入力してください" />
+
+        <!-- @clickディレクティブによってクリックされるとaddTodo()メソッドを呼び出す todolistプロパティに格納 -->
+        <button @click="addTodo">追加</button>
+        <!-- transition-gruop:tag属性の設定ができる -->
+        <!-- key属性が必要になるためtodo.text(todo項目の文字列)に設定している -->
+        <transition-group tag="ul">
+            <li  v-for="todo, index in todolist" v-bind:key="todo.text" v-bind:class="{done: todo.done}" @mouseover="todo.hover=true" @mouseout="todo.hover=false">
+                <!-- 完了したかどうかのチェックボックス v-modelディレクティブによってtodo.doneプロパティと双方向データバインディングを設定 -->
+                <input type="checkbox" v-model="todo.done" />
+                <span>{{todo.text}}</span>
+                <!-- クリックされるとindexを引数にremove()メソッドを呼び出す v-showディレクティブによってtodo.doneがtrueかつtodo.hoverがtrue(完了している) かつ　li要素の上にあれば「削除」ボタンを表示するようにする -->
+                <button class="deltbtn" @click="remove(index)" v-show="todo.done && todo.hover">×</button>
+            </li>
+        </transition-group>        
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.17/dist/vue.js"></script>
+    <script src="todolist1.js"></script>
+</body>
+
+</html>
