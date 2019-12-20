@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <title>youtube検索</title>
+</head>
+
+<body>
+    <div id="app">
+       <h1>youtube検索</h1>
+       <!-- テキストボックスを用意してv-modelディレクティブでkeywordプロパティとバインドする。 -->
+       <input v-model="keyword" placeholder="検索キーワードを入力" />
+       <!-- 検索ボタンがクリックされたらsearchMovies()メソッドを呼び出す -->
+       <button @click="searchMovies">検索</button>
+
+       <table class="table" v-show="results">
+           <tr>
+               <th>#</th>
+               <th>ムービー</th>
+               <th>情報</th>
+            </tr>
+            <!-- v-forディレクティブには動画を1つずつ取り出して変数movieに格納する key属性にはビデオのIDをバインドする -->
+            <tr v-for="(movie,index) in results" v-bind:key="movie.id.videoId">
+                <td>{{index + 1}}</td>
+                <td>
+                    <!-- img要素にv-bindディレクティブでsrc属性をバインドすることによって動画のサムネールを表示する。 a要素のhref属性のyoutube動画のURLをバインドすることでサムネールをクリックしたら動画サイトにジャンプできるようにする -->
+                    <a v-bind:href="'https://www.youtube.com/watch?v=' + movie.id.videoId">
+                        <!-- thumbnails.medium.url:サムネイル画像のURL  medhium:サムネ画像の大きさ -->
+                        <img width=320 height=180 v-bind:src="movie.snippet.thumbnails.medium.url" />
+                    </a>
+                </td>
+                <td>
+                    <!-- 動画のタイトル(title)と情報(description)を表示する -->
+                    <b>{{movie.snippet.title}}</b> <br/>
+                    <span class="desc">{{movie.snippet.description}}</span>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.17/dist/vue.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="youtube1.js"></script>
+</body>
+
+</html>
