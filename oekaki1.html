@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <title>お絵かき</title>
+</head>
+
+<body>
+    <div id="app">
+        <!-- radioボタン v-modelディレクティブでcolorプロパティに双方向データバインディングをする -->
+        色:<label><input type="radio" value="black" v-model="color">黒</label>
+           <label><input type="radio" value="red" v-model="color">赤</label>
+           <label><input type="radio" value="yellow" v-model="color">黄</label>
+           <label><input type="radio" value="green" v-model="color">緑</label>
+        <!--  線幅の選択ボックス v-modelディレクティブでwidthプロパティに双方向バインディング-->
+        <label for="width">線幅</label>
+        <select v-model="width">
+            <!-- v-forディレクティブでoption要素を生成 -->
+            <option v-for="num in [1, 2, 3, 4, 5, 6, 7, 8, 9]">{{num}}</option>
+        </select>
+        <!-- クリックするとそれぞれメソッドを呼び出す -->
+        <button @click="clearAll()">全て消去</button>
+        <button @click="undo()">１つ前の線を消去</button>
+        <button @click="redraw()">選択色で再描画</button>
+        <!-- それぞれのイベントで対応するメソッドを呼び出す ref:Vueインスタンス内でDOM要素に直接アクセス -->
+        <canvas id="myCanvas" 
+            ref="myCanvas"
+            width="700" 
+            height="700" 
+            @mousedown="mousedown" 
+            @mousemove="mousemove" 
+            @mouseup="mouseup">
+        </canvas>
+    </div>
+<script src="https://cdn.jsdelivr.net/npm/vue@2.5.17/dist/vue.js"></script>
+<script src="oekaki1.js"></script>
+</body>
+
+</html>
